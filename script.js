@@ -1,4 +1,4 @@
-let gameBoardFactory = function () {
+const gameBoardFactory = function () {
     const board =
         ["", "", "",
             "", "", "",
@@ -16,7 +16,7 @@ let gameBoardFactory = function () {
     ];
 
     const isAWin = function (a, b, c) {
-        return board[a] === board[b] && board[b] === board[c];
+        return board[a] !== "" && board[a] === board[b] && board[b] === board[c];
     };
 
     return {
@@ -34,12 +34,19 @@ let gameBoardFactory = function () {
         },
 
         checkWinner() {
-            for (let [a, b, c] of winningPositions) { 
+            for (let [a, b, c] of winningPositions) {
                 if (isAWin(a, b, c)) {
-                    return true;  
+                    return board[a];
                 }
             }
-            return false;
+            return null;
+        },
+
+        getBoard() {
+            const [a, b, c, d, e, f, g, h, i] = board;
+            console.log(a + " " + b + " " + c);
+            console.log(d + " " + e + " " + f);
+            console.log(g + " " + h + " " + i);
         },
 
         checkDraw() {
@@ -47,3 +54,66 @@ let gameBoardFactory = function () {
         }
     };
 }();
+
+const playerFactory = function (marker) {
+    return {
+        getMarker() {
+            return marker;
+        }
+    }
+};
+
+const gameModule = function () {
+    let board = gameBoardFactory;
+    let playerOne = playerFactory("X");
+    let playerTwo = playerFactory("O");
+    let turn = playerOne.getMarker();
+    let gameOver = false;
+
+    function nextTurn() {
+        turn = turn === playerOne.getMarker() ? playerTwo.getMarker() : playerOne.getMarker();
+    }
+
+    return {
+        newGame() {
+            turn = playerOne.getMarker();
+            board.clearBoard();
+        },
+
+        playTurn(position) {
+            if (turn === playerOne.getMarker()) {
+                board.updateBoard(position, playerOne.getMarker());
+            }
+            else if (turn === playerTwo.getMarker()) {
+                board.updateBoard(position, playerTwo.getMarker());
+            }
+
+            board.checkWinner();
+            board.checkDraw();
+            board.getBoard();
+            nextTurn();
+        }
+    }
+}();
+
+let game = gameModule;
+
+game.playTurn(0);
+
+game.playTurn(1);
+
+game.playTurn(2);
+
+game.playTurn(3);
+
+game.playTurn(4);
+
+game.playTurn(5);
+
+game.playTurn(6);
+
+game.playTurn(7);
+
+game.playTurn(8);
+
+
