@@ -78,9 +78,16 @@ const gameModule = function () {
         newGame() {
             turn = playerOne.getMarker();
             board.clearBoard();
+            gameOver = false;
         },
 
         playTurn(position) {
+
+            if (gameOver) {
+                console.log("Game is over. Start a new game.");
+                return;
+            }
+
             if (turn === playerOne.getMarker()) {
                 board.updateBoard(position, playerOne.getMarker());
             }
@@ -88,9 +95,17 @@ const gameModule = function () {
                 board.updateBoard(position, playerTwo.getMarker());
             }
 
-            board.checkWinner();
-            board.checkDraw();
             board.getBoard();
+            let currentPlayer = board.checkWinner();
+            if (currentPlayer !== null) {
+                console.log(`Player ${currentPlayer} wins!`);
+                gameOver = true;
+            }
+            
+            if (board.checkDraw()) {
+                console.log("The game is a tie!");
+                gameOver = true; 
+            }
             nextTurn();
         }
     }
@@ -102,18 +117,11 @@ game.playTurn(0);
 
 game.playTurn(1);
 
-game.playTurn(2);
-
 game.playTurn(3);
 
 game.playTurn(4);
 
-game.playTurn(5);
-
 game.playTurn(6);
 
-game.playTurn(7);
-
-game.playTurn(8);
 
 
