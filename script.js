@@ -28,9 +28,10 @@ const gameBoardFactory = function () {
 
         updateBoard(position, symbol) {
             if (position < 0 || position > 8 || board[position] !== "") {
-                return;
+                return false;
             }
             board[position] = symbol;
+            return true;
         },
 
         checkWinner() {
@@ -95,11 +96,17 @@ const gameModule = function () {
                 return;
             }
 
+
             if (turn === playerOne.getMarker()) {
-                board.updateBoard(position, playerOne.getMarker());
+                if(board.updateBoard(position, playerOne.getMarker())){
+                    nextTurn();
+                };
             }
             else if (turn === playerTwo.getMarker()) {
-                board.updateBoard(position, playerTwo.getMarker());
+                
+                if(board.updateBoard(position, playerTwo.getMarker())){
+                    nextTurn();
+                };
             }
 
             board.getBoard();
@@ -115,7 +122,6 @@ const gameModule = function () {
                 gameOver = true;
                 return;
             }
-            nextTurn();
         }
     }
 }();
@@ -136,7 +142,7 @@ let displayController = function () {
                     let currentPlayer = game.getTurn();
                     let position = Array.from(cellGrid.children).indexOf(event.target);
 
-                    if (!game.getGameStatus() && position.textContent !== "") {
+                    if (!game.getGameStatus() && event.target.textContent === "") {
                         game.playTurn(position);
                         event.target.innerHTML = currentPlayer;
                         console.log(`button ${position} was clicked`);
@@ -161,7 +167,16 @@ let displayController = function () {
 }();
 
 let UI = displayController;
-
 UI.markCell();
+
+let startButton = document.querySelector(".start");
+let startScreen = document.querySelector(".start-screen");
+let gameScreen = document.querySelector(".game-screen");
+
+startButton.addEventListener("click", function(){
+        // Hide the start screen
+        startScreen.classList.remove("active");
+        gameScreen.classList.add("active");
+});
 
 

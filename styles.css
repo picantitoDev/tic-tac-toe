@@ -25,3 +25,129 @@ body{
     border: 1px solid black;
     font-size: var(--marker-size);
 }
+
+.start-screen, .loading-screen, .game-screen{
+    display: none;
+    height: 100vh;
+    width: 100vw;
+
+}
+
+.start-screen.active{
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100vw; 
+    height: 100vh; 
+    background-color: #f0f0f0;
+}
+
+.game-screen.active{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.player-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.player-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #666;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background: #333;
+    color: #f0f0f0;
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+input[type="text"]::placeholder {
+    color: #aaa;
+}
+
+.symbol {
+    font-size: 24px;
+    font-weight: bold;
+    color: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: #444;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.x-symbol {
+    background: #ff4c4c; /* Rojo para X */
+    color: #fff;
+}
+
+.o-symbol {
+    background: #4caf50; /* Verde para O */
+    color: #fff;
+}
+
+.versus-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.versus-img {
+    width: 100px;
+    height: auto;
+}
+
+button.start {
+    background: #007bff;
+    color: #fff;
+    padding: 10px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, background 0.3s;
+}
+
+button.start:hover {
+    background: #0056b3;
+    transform: translateY(-3px);
+}
+
+button.start:active {
+    transform: translateY(0);
+}
