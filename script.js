@@ -80,6 +80,9 @@ const gameModule = function () {
             board.clearBoard();
             gameOver = false;
         },
+        getTurn() {
+            return turn;
+        },
 
         playTurn(position) {
 
@@ -100,28 +103,38 @@ const gameModule = function () {
             if (currentPlayer !== null) {
                 console.log(`Player ${currentPlayer} wins!`);
                 gameOver = true;
+                return;
             }
-            
+
             if (board.checkDraw()) {
                 console.log("The game is a tie!");
-                gameOver = true; 
+                gameOver = true;
+                return;
             }
             nextTurn();
         }
     }
 }();
 
-let game = gameModule;
+let displayController = function () {
+    const game = gameModule;
+    let cellGrid = document.querySelector(".grid-container");
+    return {
+        markCell() {
+            cellGrid.addEventListener("click", (event) => {
+                if(event.target.tagName === 'BUTTON') {
+                    let currentPlayer = game.getTurn();
+                    let position = Array.from(cellGrid.children).indexOf(event.target);
+                    game.playTurn(position);
+                    event.target.innerHTML = currentPlayer;
+                    console.log(`button ${position} was clicked`);
+                }
+              })
+        }
+    }
+}();
 
-game.playTurn(0);
+let UI = displayController;
 
-game.playTurn(1);
-
-game.playTurn(3);
-
-game.playTurn(4);
-
-game.playTurn(6);
-
-
+UI.markCell();
 
