@@ -84,6 +84,10 @@ const gameModule = function () {
             return turn;
         },
 
+        getGameStatus() {
+            return gameOver;
+        },
+
         playTurn(position) {
 
             if (gameOver) {
@@ -119,17 +123,39 @@ const gameModule = function () {
 let displayController = function () {
     const game = gameModule;
     let cellGrid = document.querySelector(".grid-container");
+    let results = document.querySelector(".results");
+
+    function displayResults(winner) {
+        results.innerHTML = "The winner is Player " + winner;
+    }
+
     return {
         markCell() {
             cellGrid.addEventListener("click", (event) => {
-                if(event.target.tagName === 'BUTTON') {
+                if (event.target.tagName === 'BUTTON') {
                     let currentPlayer = game.getTurn();
                     let position = Array.from(cellGrid.children).indexOf(event.target);
-                    game.playTurn(position);
-                    event.target.innerHTML = currentPlayer;
-                    console.log(`button ${position} was clicked`);
+
+                    if (!game.getGameStatus() && position.textContent !== "") {
+                        game.playTurn(position);
+                        event.target.innerHTML = currentPlayer;
+                        console.log(`button ${position} was clicked`);
+                    }
+
+                    if(game.getGameStatus()){
+                        displayResults(currentPlayer);
+                    }
                 }
-              })
+            })
+        },
+
+        clearBoard() {
+            game.newGame();
+            let cells = Array.from(cellGrid.children);
+            cells.forEach(cell => {
+                cell.textContent = "";
+            });
+            results.innerHTML = "";
         }
     }
 }();
@@ -137,4 +163,5 @@ let displayController = function () {
 let UI = displayController;
 
 UI.markCell();
+
 

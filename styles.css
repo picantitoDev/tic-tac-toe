@@ -1,17 +1,27 @@
+:root{
+    --grid-height: 600px;
+    --grid-width: 600px;
+    --cell-height: 200px;
+    --cell-width: 200px;
+    --marker-size: 48px;
+}
+
 body{
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 .grid-container{
     display: grid;
-    grid-template-columns: repeat(3, minmax(250px, 1fr));
-    grid-template-rows: repeat(3, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, minmax(var(--cell-height), 1fr));
+    grid-template-rows: repeat(3, minmax(var(--cell-width), 1fr));
     border: 1px solid black;
-    height: 750px;
-    width: 750px;
+    height: var(--grid-height);
+    width: var(--grid-width);
 }
 
 .cell{
     border: 1px solid black;
+    font-size: var(--marker-size);
 }
