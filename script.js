@@ -98,13 +98,13 @@ const gameModule = function () {
 
 
             if (turn === playerOne.getMarker()) {
-                if(board.updateBoard(position, playerOne.getMarker())){
+                if (board.updateBoard(position, playerOne.getMarker())) {
                     nextTurn();
                 };
             }
             else if (turn === playerTwo.getMarker()) {
-                
-                if(board.updateBoard(position, playerTwo.getMarker())){
+
+                if (board.updateBoard(position, playerTwo.getMarker())) {
                     nextTurn();
                 };
             }
@@ -131,11 +131,45 @@ let displayController = function () {
     let cellGrid = document.querySelector(".grid-container");
     let results = document.querySelector(".results");
 
+    let startButton = document.querySelector(".start");
+    let startScreen = document.querySelector(".start-screen");
+    let loadingScreen = document.querySelector(".loading-screen");
+    let gameScreen = document.querySelector(".game-screen");
+
     function displayResults(winner) {
         results.innerHTML = "The winner is Player " + winner;
     }
 
     return {
+        init() {
+            startButton.addEventListener("click", function () {
+                startScreen.classList.remove("active");
+                loadingScreen.classList.add("active");
+
+                setTimeout(function () {
+                    let h1 = document.createElement("h1");
+                    h1.textContent = "TIC";
+                    loadingScreen.appendChild(h1);
+                }, 700);
+
+                setTimeout(function () {
+                    let h1 = document.createElement("h1");
+                    h1.textContent = "TAC";
+                    loadingScreen.appendChild(h1);
+                }, 1400);
+
+                setTimeout(function () {
+                    let h1 = document.createElement("h1");
+                    h1.textContent = "TOE";
+                    loadingScreen.appendChild(h1);
+                }, 2100);
+
+                setTimeout(function () {
+                    loadingScreen.classList.remove("active");
+                    gameScreen.classList.add("active");
+                }, 2800);
+            });
+        },
         markCell() {
             cellGrid.addEventListener("click", (event) => {
                 if (event.target.tagName === 'BUTTON') {
@@ -148,7 +182,7 @@ let displayController = function () {
                         console.log(`button ${position} was clicked`);
                     }
 
-                    if(game.getGameStatus()){
+                    if (game.getGameStatus()) {
                         displayResults(currentPlayer);
                     }
                 }
@@ -167,16 +201,10 @@ let displayController = function () {
 }();
 
 let UI = displayController;
+UI.init();
 UI.markCell();
 
-let startButton = document.querySelector(".start");
-let startScreen = document.querySelector(".start-screen");
-let gameScreen = document.querySelector(".game-screen");
 
-startButton.addEventListener("click", function(){
-        // Hide the start screen
-        startScreen.classList.remove("active");
-        gameScreen.classList.add("active");
-});
+
 
 
