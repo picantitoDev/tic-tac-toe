@@ -199,6 +199,11 @@ let displayController = function () {
                     if (!game.getGameStatus() && event.target.textContent === "") {
                         game.playTurn(position);
                         event.target.innerHTML = currentPlayer;
+                        if(currentPlayer === "X"){
+                            event.target.classList.add("blue");
+                        }else{
+                            event.target.classList.add("red");
+                        }
                         console.log(`button ${position} was clicked`);
                     }
 
