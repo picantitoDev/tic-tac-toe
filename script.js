@@ -142,8 +142,20 @@ let displayController = function () {
     let playerOneName = "";
     let playerTwoName = "";
 
-    function displayResults(winner) {
-        results.innerHTML = "The winner is Player " + winner;
+    // Control
+    let stopClickListener = false;
+
+
+    function displayResults(currentPlayer) {
+        stopClickListener = true;
+        if (currentPlayer === "X") {
+            results.innerHTML = "The winner is " + playerOneName;
+        } else if (currentPlayer === "O") {
+            results.innerHTML = "The winner is " + playerTwoName;
+        } else {
+            results.innerHTML = "It's a tie!";
+        }
+        return;
     }
 
     return {
@@ -191,31 +203,31 @@ let displayController = function () {
             });
         },
         markCell() {
+            //WORK ON THIS
             cellGrid.addEventListener("click", (event) => {
                 if (event.target.tagName === 'BUTTON') {
-                    let currentPlayer = game.getTurn();
                     let position = Array.from(cellGrid.children).indexOf(event.target);
+                    let currentPlayer = game.getTurn();
+                    
+                    if(stopClickListener) return;
 
                     if (!game.getGameStatus() && event.target.textContent === "") {
                         game.playTurn(position);
                         event.target.innerHTML = currentPlayer;
-                        if(currentPlayer === "X"){
-                            event.target.classList.add("blue");
-                        }else{
-                            event.target.classList.add("red");
-                        }
                         console.log(`button ${position} was clicked`);
                     }
 
-                    if (game.getGameStatus()) {
+                    if(game.getGameStatus()){
                         displayResults(currentPlayer);
                     }
                 }
+
             })
         },
 
         clearBoard() {
             game.newGame();
+            stopClickListener = false;
             let cells = Array.from(cellGrid.children);
             cells.forEach(cell => {
                 cell.textContent = "";
