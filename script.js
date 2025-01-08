@@ -127,46 +127,66 @@ const gameModule = function () {
 }();
 
 let displayController = function () {
+    // Logic on displaying Tic Tac Toe Grid
     const game = gameModule;
     let cellGrid = document.querySelector(".grid-container");
     let results = document.querySelector(".results");
 
+    // Displaying different sections of the web page
     let startButton = document.querySelector(".start");
     let startScreen = document.querySelector(".start-screen");
     let loadingScreen = document.querySelector(".loading-screen");
     let gameScreen = document.querySelector(".game-screen");
+
+    // Player names
+    let playerOneName = "";
+    let playerTwoName = "";
 
     function displayResults(winner) {
         results.innerHTML = "The winner is Player " + winner;
     }
 
     return {
-        init() {
+        startGame() {
             startButton.addEventListener("click", function () {
+                playerOneName = document.getElementById('first-player-name').value;
+                playerTwoName = document.getElementById('second-player-name').value;
+
                 startScreen.classList.remove("active");
                 loadingScreen.classList.add("active");
 
                 setTimeout(function () {
                     let h1 = document.createElement("h1");
                     h1.textContent = "TIC";
+                    h1.style.fontSize = "200px";
+                    h1.style.marginBottom = "2px";
+                    h1.style.wordSpacing = "30px";
                     loadingScreen.appendChild(h1);
                 }, 700);
 
                 setTimeout(function () {
                     let h1 = document.createElement("h1");
                     h1.textContent = "TAC";
+                    h1.style.fontSize = "200px";
+                    h1.style.marginBottom = "2px";
+                    h1.style.wordSpacing = "30px";
                     loadingScreen.appendChild(h1);
                 }, 1400);
 
                 setTimeout(function () {
                     let h1 = document.createElement("h1");
-                    h1.textContent = "TOE";
+                    h1.textContent = "TOE!";
+                    h1.style.fontSize = "200px";
+                    h1.style.marginBottom = "2px";
+                    h1.style.wordSpacing = "30px";
                     loadingScreen.appendChild(h1);
                 }, 2100);
 
                 setTimeout(function () {
                     loadingScreen.classList.remove("active");
                     gameScreen.classList.add("active");
+                    console.log(playerOneName);
+                    console.log(playerTwoName);
                 }, 2800);
             });
         },
@@ -201,7 +221,7 @@ let displayController = function () {
 }();
 
 let UI = displayController;
-UI.init();
+UI.startGame();
 UI.markCell();
 
 
