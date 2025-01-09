@@ -69,7 +69,7 @@ const gameModule = function () {
     let playerOne = playerFactory("X");
     let playerTwo = playerFactory("O");
     let turn = playerOne.getMarker();
-    let gameOver = false;
+    let gameStatus = "running";
 
     function nextTurn() {
         turn = turn === playerOne.getMarker() ? playerTwo.getMarker() : playerOne.getMarker();
@@ -79,19 +79,19 @@ const gameModule = function () {
         newGame() {
             turn = playerOne.getMarker();
             board.clearBoard();
-            gameOver = false;
+            gameStatus = "running";
         },
         getTurn() {
             return turn;
         },
 
         getGameStatus() {
-            return gameOver;
+            return gameStatus;
         },
 
         playTurn(position) {
 
-            if (gameOver) {
+            if (gameStatus === "won" || gameStatus === "tie") {
                 console.log("Game is over. Start a new game.");
                 return;
             }
@@ -113,13 +113,13 @@ const gameModule = function () {
             let currentPlayer = board.checkWinner();
             if (currentPlayer !== null) {
                 console.log(`Player ${currentPlayer} wins!`);
-                gameOver = true;
+                gameStatus = "won";
                 return;
             }
 
             if (board.checkDraw()) {
                 console.log("The game is a tie!");
-                gameOver = true;
+                gameStatus = "tie";
                 return;
             }
         }
@@ -146,15 +146,22 @@ let displayController = function () {
     let stopClickListener = false;
 
 
-    function displayResults(currentPlayer) {
+    function displayResults(currentPlayer, result) {
         stopClickListener = true;
-        if (currentPlayer === "X") {
-            results.innerHTML = "The winner is " + playerOneName;
-        } else if (currentPlayer === "O") {
-            results.innerHTML = "The winner is " + playerTwoName;
-        } else {
+
+        if(result === "tie"){
             results.innerHTML = "It's a tie!";
+
         }
+
+        if (currentPlayer === "X" && result === "won") {
+            results.innerHTML = "The winner is " + playerOneName;
+        } else if (currentPlayer === "O" && result === "won") {
+            results.innerHTML = "The winner is " + playerTwoName;
+        }else{
+            console.log("invalid");
+        }
+
         return;
     }
 
@@ -211,7 +218,7 @@ let displayController = function () {
                     
                     if(stopClickListener) return;
 
-                    if (!game.getGameStatus() && event.target.textContent === "") {
+                    if (game.getGameStatus() === "running" && event.target.textContent === "") {
                         game.playTurn(position);
                         event.target.innerHTML = currentPlayer;
                         if(currentPlayer === "X"){
@@ -225,8 +232,8 @@ let displayController = function () {
                         console.log(`button ${position} was clicked`);
                     }
 
-                    if(game.getGameStatus()){
-                        displayResults(currentPlayer);
+                    if(game.getGameStatus() === "won" || game.getGameStatus() === "tie"){
+                        displayResults(currentPlayer, game.getGameStatus());
                     }
                 }
 
