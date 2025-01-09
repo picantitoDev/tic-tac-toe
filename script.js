@@ -149,7 +149,7 @@ let displayController = function () {
     function displayResults(currentPlayer, result) {
         stopClickListener = true;
 
-        if(result === "tie"){
+        if (result === "tie") {
             results.innerHTML = "It's a tie!";
 
         }
@@ -158,7 +158,7 @@ let displayController = function () {
             results.innerHTML = "The winner is " + playerOneName;
         } else if (currentPlayer === "O" && result === "won") {
             results.innerHTML = "The winner is " + playerTwoName;
-        }else{
+        } else {
             console.log("invalid");
         }
 
@@ -168,71 +168,63 @@ let displayController = function () {
     return {
         startGame() {
             startButton.addEventListener("click", function () {
+                event.preventDefault(startButton);
+
                 playerOneName = document.getElementById('first-player-name').value;
                 playerTwoName = document.getElementById('second-player-name').value;
 
-                startScreen.classList.remove("active");
-                loadingScreen.classList.add("active");
+                if (playerOneName === "" || playerTwoName === "") {
+                    alert("Both players must enter their names!");
+                    return;
+                }
 
-                setTimeout(function () {
-                    let h1 = document.createElement("h1");
-                    h1.textContent = "TIC";
-                    h1.style.fontSize = "200px";
-                    h1.style.marginBottom = "2px";
-                    h1.style.wordSpacing = "30px";
-                    loadingScreen.appendChild(h1);
-                }, 700);
+                startScreen.style.animation = "fade-out 1s ease-out forwards";
+                setTimeout(() => {
+                    startScreen.classList.remove("active");
+                    loadingScreen.classList.add("active");
+                }, 1000); 
 
-                setTimeout(function () {
+                function createFallingWord(text, delay) {
                     let h1 = document.createElement("h1");
-                    h1.textContent = "TAC";
-                    h1.style.fontSize = "200px";
-                    h1.style.marginBottom = "2px";
-                    h1.style.wordSpacing = "30px";
+                    h1.textContent = text;
+                    h1.classList.add("falling-word");
+                    h1.style.animation = `fall 0.5s ease-out ${delay}s forwards`;
                     loadingScreen.appendChild(h1);
-                }, 1400);
+                }
 
-                setTimeout(function () {
-                    let h1 = document.createElement("h1");
-                    h1.textContent = "TOE!";
-                    h1.style.fontSize = "200px";
-                    h1.style.marginBottom = "2px";
-                    h1.style.wordSpacing = "30px";
-                    loadingScreen.appendChild(h1);
-                }, 2100);
+                createFallingWord("TIC", 0.7);
+                createFallingWord("TAC", 1.4);
+                createFallingWord("TOE!", 2.1);
 
                 setTimeout(function () {
                     loadingScreen.classList.remove("active");
                     gameScreen.classList.add("active");
-                    console.log(playerOneName);
-                    console.log(playerTwoName);
-                }, 2800);
+                }, 4500);
             });
         },
         markCell() {
-            //WORK ON THIS
             cellGrid.addEventListener("click", (event) => {
                 if (event.target.tagName === 'BUTTON') {
                     let position = Array.from(cellGrid.children).indexOf(event.target);
                     let currentPlayer = game.getTurn();
-                    
-                    if(stopClickListener) return;
+
+                    if (stopClickListener) return;
 
                     if (game.getGameStatus() === "running" && event.target.textContent === "") {
                         game.playTurn(position);
                         event.target.innerHTML = currentPlayer;
-                        if(currentPlayer === "X"){
+                        if (currentPlayer === "X") {
                             event.target.classList.add("blue");
                         }
 
-                        if(currentPlayer === "O"){
+                        if (currentPlayer === "O") {
                             event.target.classList.add("red");
                         }
 
                         console.log(`button ${position} was clicked`);
                     }
 
-                    if(game.getGameStatus() === "won" || game.getGameStatus() === "tie"){
+                    if (game.getGameStatus() === "won" || game.getGameStatus() === "tie") {
                         displayResults(currentPlayer, game.getGameStatus());
                     }
                 }

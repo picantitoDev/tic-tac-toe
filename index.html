@@ -12,29 +12,31 @@
 </head>
 
 <body>
-    <section class="start-screen active">
-        <div class="player-container">
-            <!-- Jugador 1 -->
-            <div class="player player-one">
-                <img src="img/firstPlayer.png" alt="First Player" class="player-img">
-                <input type="text" id="first-player-name" placeholder="Player 1 Name">
-                <div class="symbol x-symbol">X</div>
-            </div>
 
-            <!-- Imagen "Versus" -->
-            <div class="versus-container">
-                <img src="img/versus.png" alt="Versus" class="versus-img">
-                <button class="start">START</button>
-            </div>
+    <form id="game-form">
+        <section class="start-screen active">
+            <div class="player-container">
+                <div class="player player-one">
+                    <img src="img/firstPlayer.png" alt="First Player" class="player-img">
+                    <input type="text" id="first-player-name" placeholder="Player 1 Name" required>
+                    <div class="symbol x-symbol">X</div>
+                </div>
 
-            <!-- Jugador 2 -->
-            <div class="player player-two">
-                <img src="img/secondPlayer.jpg" alt="Second Player" class="player-img">
-                <input type="text" id="second-player-name" placeholder="Player 2 Name">
-                <div class="symbol o-symbol">O</div>
+                <div class="versus-container">
+                    <img src="img/versus.png" alt="Versus" class="versus-img">
+                    <button type="submit" class="start">START</button> <!-- Now submits the form -->
+                </div>
+
+                <div class="player player-two">
+                    <img src="img/secondPlayer.jpg" alt="Second Player" class="player-img">
+                    <input type="text" id="second-player-name" placeholder="Player 2 Name" required>
+                    <div class="symbol o-symbol">O</div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </form>
+
+
     <section class="loading-screen">
     </section>
     <section class="game-screen">
