@@ -214,6 +214,14 @@ let displayController = function () {
                     if (!game.getGameStatus() && event.target.textContent === "") {
                         game.playTurn(position);
                         event.target.innerHTML = currentPlayer;
+                        if(currentPlayer === "X"){
+                            event.target.classList.add("blue");
+                        }
+
+                        if(currentPlayer === "O"){
+                            event.target.classList.add("red");
+                        }
+
                         console.log(`button ${position} was clicked`);
                     }
 
@@ -231,6 +239,8 @@ let displayController = function () {
             let cells = Array.from(cellGrid.children);
             cells.forEach(cell => {
                 cell.textContent = "";
+                cell.classList.remove("blue");
+                cell.classList.remove("red");
             });
             results.innerHTML = "";
         }
