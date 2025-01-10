@@ -15,7 +15,7 @@
 
 body{
     margin: 0;
-    background-color: #f0eef1;
+    background-color: orange;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,7 +63,6 @@ h1{
     display: none;
     height: 100vh;
     width: 100vw;
-
 }
 
 .start-screen.active{
@@ -75,7 +74,10 @@ h1{
     left: 0;
     width: 100vw; 
     height: 100vh; 
-    background-color: #f0f0f0;
+}
+
+.start-screen.active, .loading-screen.active, .game-screen.active{
+    background-color: orange;
 }
 
 .loading-screen.active{
@@ -99,6 +101,7 @@ h1{
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+    background-color: white;
     height: 40%;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -313,5 +316,19 @@ button.start:active {
     word-spacing: 30px;
     text-align: center;
     opacity: 0;
+    color: black;
     position: relative;
+}
+
+.counter{
+    display: flex;
+    border: 2px solid red;
+    width: 500px;
+    justify-content: space-evenly;
+}
+
+.counter-1, .counter-2, .counter-3{
+    border: 2px solid blue;
+    flex: 1;
+    text-align: center;
 }
