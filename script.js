@@ -131,6 +131,7 @@ let displayController = function () {
     const game = gameModule;
     let cellGrid = document.querySelector(".grid-container");
     let results = document.querySelector(".results");
+    let reset = document.querySelector(".reset");
 
     // Displaying different sections of the web page
     let startButton = document.querySelector(".start");
@@ -142,6 +143,11 @@ let displayController = function () {
     let playerOneName = "";
     let playerTwoName = "";
 
+    // Scores
+    let playerOneWins = 0;
+    let playerTwoWins = 0;
+    let draws = 0;
+
     // Control
     let stopClickListener = false;
 
@@ -151,17 +157,20 @@ let displayController = function () {
 
         if (result === "tie") {
             results.innerHTML = "It's a tie!";
-
+            draws++;
         }
 
         if (currentPlayer === "X" && result === "won") {
             results.innerHTML = "The winner is " + playerOneName;
+            playerOneWins++;
         } else if (currentPlayer === "O" && result === "won") {
             results.innerHTML = "The winner is " + playerTwoName;
+            playerTwoWins++;
         } else {
             console.log("invalid");
         }
 
+        reset.style.display = "block";
         return;
     }
 
@@ -182,7 +191,7 @@ let displayController = function () {
                 setTimeout(() => {
                     startScreen.classList.remove("active");
                     loadingScreen.classList.add("active");
-                }, 1000); 
+                }, 1000);
 
                 function createFallingWord(text, delay) {
                     let h1 = document.createElement("h1");
@@ -233,15 +242,18 @@ let displayController = function () {
         },
 
         clearBoard() {
-            game.newGame();
-            stopClickListener = false;
-            let cells = Array.from(cellGrid.children);
-            cells.forEach(cell => {
-                cell.textContent = "";
-                cell.classList.remove("blue");
-                cell.classList.remove("red");
+            reset.addEventListener("click", function () {
+                game.newGame();
+                stopClickListener = false;
+                let cells = Array.from(cellGrid.children);
+                cells.forEach(cell => {
+                    cell.textContent = "";
+                    cell.classList.remove("blue");
+                    cell.classList.remove("red");
+                });
+                results.innerHTML = "";
+                reset.style.display = "none";
             });
-            results.innerHTML = "";
         }
     }
 }();
