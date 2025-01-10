@@ -148,6 +148,13 @@ let displayController = function () {
     let playerTwoWins = 0;
     let draws = 0;
 
+    // Scoreboard
+    let playerOneScoreboardName = document.querySelector(".p1-name");
+    let playerOneScoreboardNumber = document.querySelector(".p1-score");
+    let playerTwoScoreboardName = document.querySelector(".p2-name");
+    let playerTwoScoreboardNumber = document.querySelector(".p2-score");
+    let drawScoreboardNumber = document.querySelector(".draw-score");
+
     // Control
     let stopClickListener = false;
 
@@ -158,14 +165,18 @@ let displayController = function () {
         if (result === "tie") {
             results.innerHTML = "It's a tie!";
             draws++;
+            drawScoreboardNumber.innerHTML = draws;
         }
 
         if (currentPlayer === "X" && result === "won") {
             results.innerHTML = "The winner is " + playerOneName;
             playerOneWins++;
+            playerOneScoreboardNumber.innerHTML = playerOneWins;
         } else if (currentPlayer === "O" && result === "won") {
             results.innerHTML = "The winner is " + playerTwoName;
             playerTwoWins++;
+            playerTwoScoreboardNumber.innerHTML = playerTwoWins;
+
         } else {
             console.log("invalid");
         }
@@ -186,6 +197,9 @@ let displayController = function () {
                     alert("Both players must enter their names!");
                     return;
                 }
+
+                playerOneScoreboardName.innerHTML = playerOneName;
+                playerTwoScoreboardName.innerHTML = playerTwoName;
 
                 startScreen.style.animation = "fade-out 1s ease-out forwards";
                 setTimeout(() => {
