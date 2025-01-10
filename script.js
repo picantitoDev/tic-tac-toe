@@ -125,7 +125,6 @@ const gameModule = function () {
         }
     }
 }();
-
 let displayController = function () {
     // Logic on displaying Tic Tac Toe Grid
     const game = gameModule;
@@ -159,7 +158,7 @@ let displayController = function () {
     // Control
     let stopClickListener = false;
 
-
+    // Display results
     function displayResults(currentPlayer, result) {
         stopClickListener = true;
 
@@ -177,7 +176,6 @@ let displayController = function () {
             results.innerHTML = "The winner is " + playerTwoName;
             playerTwoWins++;
             playerTwoScoreboardNumber.innerHTML = playerTwoWins;
-
         } else {
             console.log("invalid");
         }
@@ -186,116 +184,125 @@ let displayController = function () {
         return;
     }
 
-    return {
-        startGame() {
-            startButton.addEventListener("click", function () {
-                event.preventDefault(startButton);
-
-                playerOneName = document.getElementById('first-player-name').value;
-                playerTwoName = document.getElementById('second-player-name').value;
-
-                if (playerOneName === "" || playerTwoName === "") {
-                    alert("Both players must enter their names!");
-                    return;
-                }
-
-                playerOneScoreboardName.innerHTML = playerOneName;
-                playerTwoScoreboardName.innerHTML = playerTwoName;
-
-                startScreen.style.animation = "fade-out 1s ease-out forwards";
-                setTimeout(() => {
-                    startScreen.classList.remove("active");
-                    loadingScreen.classList.add("active");
-                }, 1000);
-
-                function createFallingWord(text, delay) {
-                    let h1 = document.createElement("h1");
-                    h1.textContent = text;
-                    h1.classList.add("falling-word");
-                    h1.style.animation = `fall 0.5s ease-out ${delay}s forwards`;
-                    loadingScreen.appendChild(h1);
-                }
-
-                createFallingWord("TIC", 0.7);
-                createFallingWord("TAC", 1.4);
-                createFallingWord("TOE!", 2.1);
-
-                setTimeout(function () {
-                    loadingScreen.classList.remove("active");
-                    gameScreen.classList.add("active");
-                }, 4500);
-            });
-        },
-        markCell() {
-            cellGrid.addEventListener("click", (event) => {
-                if (event.target.tagName === 'BUTTON') {
-                    let position = Array.from(cellGrid.children).indexOf(event.target);
-                    let currentPlayer = game.getTurn();
-
-                    if (stopClickListener) return;
-
-                    if (game.getGameStatus() === "running" && event.target.textContent === "") {
-                        game.playTurn(position);
-                        event.target.innerHTML = currentPlayer;
-                        if (currentPlayer === "X") {
-                            event.target.classList.add("blue");
-                        }
-
-                        if (currentPlayer === "O") {
-                            event.target.classList.add("red");
-                        }
-
-                        console.log(`button ${position} was clicked`);
-                    }
-
-                    if (game.getGameStatus() === "won" || game.getGameStatus() === "tie") {
-                        displayResults(currentPlayer, game.getGameStatus());
-                    }
-                }
-
-            })
-        },
-
-        clearBoard() {
-            reset.addEventListener("click", function () {
-                game.newGame();
-                stopClickListener = false;
-                let cells = Array.from(cellGrid.children);
-                cells.forEach(cell => {
-                    cell.textContent = "";
-                    cell.classList.remove("blue");
-                    cell.classList.remove("red");
-                });
-                results.innerHTML = "";
-                reset.style.display = "none";
-            });
-        },
-
-        returnToStartScreen(){
-            backButton.addEventListener("click", function(){
-                document.getElementById('first-player-name').value = "";
-                document.getElementById('second-player-name').value = "";
-                gameScreen.classList.remove("active");
-                startScreen.classList.add("active");
-                playerOneScoreboardNumber.innerHTML = "0";
-                playerTwoScoreboardNumber.innerHTML = "0";
-                drawScoreboardNumber.innerHTML = "0";
-                startScreen.style.animation = "1s ease-out 0s 1 normal forwards running fade-in";
-                loadingScreen.innerHTML = "";
-                playerOneWins = 0;
-                playerTwoWins = 0;
-                draws = 0;
-            });
-        }
+    // Initializing the game and event listeners
+    function init() {
+        startGame();
+        markCell();
+        clearBoard();
+        returnToStartScreen();
     }
+
+    // Start game logic
+    function startGame() {
+        startButton.addEventListener("click", function () {
+            event.preventDefault(startButton);
+
+            playerOneName = document.getElementById('first-player-name').value;
+            playerTwoName = document.getElementById('second-player-name').value;
+
+            if (playerOneName === "" || playerTwoName === "") {
+                alert("Both players must enter their names!");
+                return;
+            }
+
+            playerOneScoreboardName.innerHTML = playerOneName;
+            playerTwoScoreboardName.innerHTML = playerTwoName;
+
+            startScreen.style.animation = "fade-out 1s ease-out forwards";
+            setTimeout(() => {
+                startScreen.classList.remove("active");
+                loadingScreen.classList.add("active");
+            }, 1000);
+
+            function createFallingWord(text, delay) {
+                let h1 = document.createElement("h1");
+                h1.textContent = text;
+                h1.classList.add("falling-word");
+                h1.style.animation = `fall 0.5s ease-out ${delay}s forwards`;
+                loadingScreen.appendChild(h1);
+            }
+
+            createFallingWord("TIC", 0.7);
+            createFallingWord("TAC", 1.4);
+            createFallingWord("TOE!", 2.1);
+
+            setTimeout(function () {
+                loadingScreen.classList.remove("active");
+                gameScreen.classList.add("active");
+            }, 4500);
+        });
+    }
+
+    // Mark cell logic
+    function markCell() {
+        cellGrid.addEventListener("click", (event) => {
+            if (event.target.tagName === 'BUTTON') {
+                let position = Array.from(cellGrid.children).indexOf(event.target);
+                let currentPlayer = game.getTurn();
+
+                if (stopClickListener) return;
+
+                if (game.getGameStatus() === "running" && event.target.textContent === "") {
+                    game.playTurn(position);
+                    event.target.innerHTML = currentPlayer;
+                    if (currentPlayer === "X") {
+                        event.target.classList.add("blue");
+                    }
+
+                    if (currentPlayer === "O") {
+                        event.target.classList.add("red");
+                    }
+
+                    console.log(`button ${position} was clicked`);
+                }
+
+                if (game.getGameStatus() === "won" || game.getGameStatus() === "tie") {
+                    displayResults(currentPlayer, game.getGameStatus());
+                }
+            }
+        });
+    }
+
+    // Clear board logic
+    function clearBoard() {
+        reset.addEventListener("click", function () {
+            game.newGame();
+            stopClickListener = false;
+            let cells = Array.from(cellGrid.children);
+            cells.forEach(cell => {
+                cell.textContent = "";
+                cell.classList.remove("blue");
+                cell.classList.remove("red");
+            });
+            results.innerHTML = "";
+            reset.style.display = "none";
+        });
+    }
+
+    // Return to start screen
+    function returnToStartScreen() {
+        backButton.addEventListener("click", function () {
+            document.getElementById('first-player-name').value = "";
+            document.getElementById('second-player-name').value = "";
+            gameScreen.classList.remove("active");
+            startScreen.classList.add("active");
+            playerOneScoreboardNumber.innerHTML = "0";
+            playerTwoScoreboardNumber.innerHTML = "0";
+            drawScoreboardNumber.innerHTML = "0";
+            startScreen.style.animation = "1s ease-out 0s 1 normal forwards running fade-in";
+            loadingScreen.innerHTML = "";
+            playerOneWins = 0;
+            playerTwoWins = 0;
+            draws = 0;
+        });
+    }
+
+    // Return the object with the init method
+    return {
+        init: init
+    };
 }();
 
+// Initialize the game
 let UI = displayController;
-UI.startGame();
-UI.markCell();
-UI.returnToStartScreen();
-
-
-
-
-
+UI.init();
