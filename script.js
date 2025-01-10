@@ -138,6 +138,7 @@ let displayController = function () {
     let startScreen = document.querySelector(".start-screen");
     let loadingScreen = document.querySelector(".loading-screen");
     let gameScreen = document.querySelector(".game-screen");
+    let backButton = document.querySelector(".back");
 
     // Player names
     let playerOneName = "";
@@ -268,6 +269,23 @@ let displayController = function () {
                 results.innerHTML = "";
                 reset.style.display = "none";
             });
+        },
+
+        returnToStartScreen(){
+            backButton.addEventListener("click", function(){
+                document.getElementById('first-player-name').value = "";
+                document.getElementById('second-player-name').value = "";
+                gameScreen.classList.remove("active");
+                startScreen.classList.add("active");
+                playerOneScoreboardNumber.innerHTML = "0";
+                playerTwoScoreboardNumber.innerHTML = "0";
+                drawScoreboardNumber.innerHTML = "0";
+                startScreen.style.animation = "1s ease-out 0s 1 normal forwards running fade-in";
+                loadingScreen.innerHTML = "";
+                playerOneWins = 0;
+                playerTwoWins = 0;
+                draws = 0;
+            });
         }
     }
 }();
@@ -275,6 +293,7 @@ let displayController = function () {
 let UI = displayController;
 UI.startGame();
 UI.markCell();
+UI.returnToStartScreen();
 
 
 
